@@ -20,23 +20,7 @@ pipeline {
             steps {
                 // Find the current process, kill it, and start a new one
                 sh '''
-                    # Find the PID of the running server
-                    OLD_PID=$(pgrep -f "server" || echo "")
-                    
-                    # Kill the process if it exists
-                    if [ ! -z "$OLD_PID" ]; then
-                        echo "Stopping server with PID $OLD_PID"
-                        kill $OLD_PID
-                        sleep 2
-                        
-                        # Force kill if still running
-                        if ps -p $OLD_PID > /dev/null; then
-                            echo "Force killing server with PID $OLD_PID"
-                            kill -9 $OLD_PID
-                        fi
-                    else
-                        echo "No running server found"
-                    fi
+                    pkill -f server 
                     
                     # Start the new server detached
                     echo "Starting new server instance"
