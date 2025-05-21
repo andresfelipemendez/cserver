@@ -15,13 +15,16 @@ pipeline {
                 sh 'gcc server.c -o server'
             }
         }
-        
+        stage('Kill') {
+            steps {
+                // Compile your C server
+                sh 'pkill -f server || true'
+            }
+        }
         stage('Deploy') {
             steps {
                 // Find the current process, kill it, and start a new one
                 sh '''
-                    pkill -f server || true
-                    sleep 2
                     # Start the new server detached
                     echo "Starting new server instance"
                     nohup ./server > server.log 2>&1 &
