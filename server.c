@@ -10,7 +10,7 @@
 int main() {
     struct sockaddr_in addr = {};
     addr.sin_family = AF_INET;
-    addr.sin_port = 0x901f;
+    addr.sin_port = htons(8080);
     addr.sin_addr.s_addr = INADDR_ANY;
 
     int s = socket(AF_INET, SOCK_STREAM,0);
@@ -48,7 +48,7 @@ int main() {
             off_t file_size = file_stat.st_size;
 
             char header[128];
-            sprintf(header, "HTTP/1.1 200 OK\r\nContent-Length: %ld\r\n\r\n", file_size);
+            sprintf(header, "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: %ld\r\n\r\n", file_size);
             send(client_fd, header, strlen(header),0);
 
             sendfile(client_fd,open_fd,0,file_size);
