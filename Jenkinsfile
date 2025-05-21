@@ -15,12 +15,7 @@ pipeline {
                 sh 'gcc server.c -o server'
             }
         }
-        stage('Kill') {
-            steps {
-                // Compile your C server
-                sh 'pgrep server | xargs kill'
-            }
-        }
+
         stage('Deploy') {
             steps {
                 // Find the current process, kill it, and start a new one
