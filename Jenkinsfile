@@ -12,7 +12,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile your C server
-                sh 'make clean && make'
+                sh 'gcc server.c -o server'
             }
         }
         
@@ -21,7 +21,7 @@ pipeline {
                 // Find the current process, kill it, and start a new one
                 sh '''
                     # Find the PID of the running server
-                    OLD_PID=$(pgrep -f "your_server_binary_name" || echo "")
+                    OLD_PID=$(pgrep -f "server" || echo "")
                     
                     # Kill the process if it exists
                     if [ ! -z "$OLD_PID" ]; then
@@ -40,7 +40,7 @@ pipeline {
                     
                     # Start the new server detached
                     echo "Starting new server instance"
-                    nohup ./your_server_binary_name > server.log 2>&1 &
+                    nohup ./server > server.log 2>&1 &
                     
                     # Save the new PID for reference
                     echo $! > server.pid
