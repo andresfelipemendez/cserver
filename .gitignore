@@ -52,3 +52,6 @@ Mkfile.old
 dkms.conf
 build
 server
+personalserver
+logs/server_stderr.log
+logs/server_stdout.log
