@@ -20,15 +20,26 @@ pipeline {
             steps {
                 // Find the current process, kill it, and start a new one
                 sh '''
-                    pkill -f server 
-                    
+                    pkill -f server || true
+                    sleep 2
                     # Start the new server detached
                     echo "Starting new server instance"
                     nohup ./server > server.log 2>&1 &
                     
                     # Save the new PID for reference
                     echo $! > server.pid
-                    echo "New server started with PID $!"
+                    NEW_PID=$!
+                    echo "New server started with PID $NEW_PID"
+                    
+                    # Verify the server started successfully
+                    sleep 1
+                    if ps -p $NEW_PID > /dev/null; then
+                        echo "Server successfully started"
+                    else
+                        echo "ERROR: Server failed to start or crashed immediately"
+                        cat server.log
+                        exit 1
+                    fi
                 '''
             }
         }
