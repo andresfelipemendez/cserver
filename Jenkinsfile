@@ -18,7 +18,7 @@ pipeline {
         stage('Kill') {
             steps {
                 // Compile your C server
-                sh 'pkill -f server || true'
+                sh 'pgrep server | xargs kill'
             }
         }
         stage('Deploy') {
