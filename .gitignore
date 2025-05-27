@@ -55,3 +55,5 @@ server
 personalserver
 logs/server_stderr.log
 logs/server_stdout.log
+_build
+personalwebsiteserver
